@@ -1,0 +1,20 @@
+.DS_Store
+
+# Local environments
+.venv/
+__pycache__/
+*.pyc
+
+# Logs and temp files
+*.log
+output/logs/
+
+# LaTeX build artifacts
+*.aux
+*.out
+*.xdv
+*.synctex.gz
+
+# Raw source archives and bulk downloads
+raw/
+raw.zip

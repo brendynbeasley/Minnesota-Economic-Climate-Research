@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>North Star Atlas</title>
+    <link rel="stylesheet" href="./assets/leaflet.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="brand-lockup">
+          <div class="logo-mark" aria-hidden="true">NS</div>
+          <div class="brand-copy">
+            <p class="eyebrow">Minnesota Climate Risk Dashboard</p>
+            <h1>North Star Atlas</h1>
+            <p class="brand-subtitle">Minnesota county climate, housing, labor, and migration.</p>
+          </div>
+        </div>
+        <div class="hero-byline">
+          <span class="byline-label">By</span>
+          <strong>Brendyn Beasley</strong>
+          <small id="coverage-years">2011-2023</small>
+        </div>
+      </header>
+
+      <section class="overview-strip" aria-label="Project overview">
+        <article class="overview-card">
+          <span class="guide-kicker">Core Finding</span>
+          <h2>Precipitation is the clearest drag</h2>
+          <p>Across the project, wetter county-years line up most consistently with weaker migration, employment, and construction activity.</p>
+        </article>
+        <article class="overview-card">
+          <span class="guide-kicker">Research Design</span>
+          <h2>County-year evidence</h2>
+          <p>The dashboard is built from 87 Minnesota counties, 2011-2023 data, and the project’s county fixed-effects results across climate, labor, housing, and income outcomes.</p>
+        </article>
+        <article class="overview-card">
+          <span class="guide-kicker">Best Evidence</span>
+          <h2>Permits, firms, and jobs</h2>
+          <p>The cleanest signals come from building permits, construction establishments, employment, and migration. Use Research View to see the formal model results behind them.</p>
+        </article>
+      </section>
+
+      <main class="dashboard-grid">
+        <section class="map-panel panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Map View</p>
+              <h2 id="metric-title">Overall climate-economic pressure</h2>
+              <p id="map-subtitle" class="map-subtitle">
+                Choose a lens, then click a county to compare it with the statewide trend.
+              </p>
+              <div id="metric-chips" class="metric-chips"></div>
+            </div>
+            <div class="map-actions">
+              <label class="control">
+                <span>Metric</span>
+                <select id="metric-select"></select>
+              </label>
+              <label class="control year-control">
+                <span>Year</span>
+                <div class="year-input">
+                  <input id="year-range" type="range" min="2011" max="2023" step="1" value="2023" />
+                  <strong id="year-value">2023</strong>
+                </div>
+              </label>
+              <button id="reset-view" class="ghost-button" type="button">Reset view</button>
+            </div>
+          </div>
+
+          <div id="map"></div>
+
+          <div class="map-footer">
+            <div id="legend" class="legend"></div>
+            <div class="metric-copy">
+              <p id="metric-description" class="metric-description"></p>
+              <p id="metric-meaning" class="metric-meaning"></p>
+            </div>
+          </div>
+
+          <div class="map-guide-grid">
+            <article class="guide-card">
+              <span class="guide-kicker">What You’re Seeing</span>
+              <h3 id="guide-what-title">A statewide county comparison</h3>
+              <p id="guide-what-text"></p>
+            </article>
+            <article class="guide-card">
+              <span class="guide-kicker">How To Read It</span>
+              <h3 id="guide-read-title">Color and rank</h3>
+              <p id="guide-read-text"></p>
+            </article>
+            <article class="guide-card">
+              <span class="guide-kicker">How To Use It</span>
+              <h3 id="guide-use-title">Explore a county</h3>
+              <p id="guide-use-text"></p>
+            </article>
+          </div>
+        </section>
+
+        <aside class="detail-panel panel">
+          <div class="panel-header detail-header">
+            <div>
+              <p class="section-label">County Profile</p>
+              <h2 id="county-name">Select a county</h2>
+              <p class="detail-subtitle">
+                Select a county to inspect its latest metrics and trend against Minnesota.
+              </p>
+              <p id="county-context" class="county-context">
+                The selected county will get a plain-language interpretation here so you can quickly understand why it stands out.
+              </p>
+            </div>
+            <label class="search-control">
+              <span>Jump to county</span>
+              <input id="county-search" type="search" placeholder="Start typing a county name" list="county-options" />
+              <datalist id="county-options"></datalist>
+            </label>
+          </div>
+
+          <div class="score-grid">
+            <article class="score-card accent">
+              <span>Overall pressure</span>
+              <strong id="overall-score">--</strong>
+              <small id="overall-score-note">Exploratory score</small>
+            </article>
+            <article class="score-card">
+              <span>Flood risk</span>
+              <strong id="flood-score">--</strong>
+              <small id="flood-score-note">Official FEMA NRI score</small>
+            </article>
+            <article class="score-card">
+              <span>Population growth</span>
+              <strong id="pop-growth-score">--</strong>
+              <small id="pop-growth-note">Latest year</small>
+            </article>
+            <article class="score-card">
+              <span>Permit units</span>
+              <strong id="permit-score">--</strong>
+              <small id="permit-note">Per 1,000 residents</small>
+            </article>
+          </div>
+
+          <div class="detail-list" id="detail-list"></div>
+
+          <div class="trend-panel">
+            <div class="trend-toolbar">
+              <div>
+                <p class="section-label">Trend Viewer</p>
+                <h3>County vs. Minnesota average</h3>
+              </div>
+              <label class="control compact">
+                <span>Series</span>
+                <select id="trend-metric-select"></select>
+              </label>
+            </div>
+            <div class="trend-chart-wrap">
+              <canvas id="trend-chart"></canvas>
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <section class="bottom-grid">
+        <section class="panel ranking-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">County Ranking</p>
+              <h2 id="ranking-title">Sorted by map metric</h2>
+            </div>
+            <p class="ranking-subtitle">Click any row to jump the map and county profile.</p>
+          </div>
+          <div class="ranking-table-wrap">
+            <table class="ranking-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>County</th>
+                  <th id="ranking-value-label">Value</th>
+                </tr>
+              </thead>
+              <tbody id="ranking-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel findings-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Research View</p>
+              <h2 id="findings-title">Precipitation model signals</h2>
+              <p id="findings-subtitle" class="ranking-subtitle">
+                The core paper result is that precipitation is the most consistent drag on Minnesota county activity.
+              </p>
+            </div>
+            <div class="findings-toggle" role="tablist" aria-label="Research findings view">
+              <button class="toggle-button is-active" type="button" data-findings-view="precip">Precipitation</button>
+              <button class="toggle-button" type="button" data-findings-view="temp">Temperature</button>
+              <button class="toggle-button" type="button" data-findings-view="risk">Flood Amplification</button>
+            </div>
+          </div>
+          <div class="findings-chart-wrap">
+            <canvas id="findings-chart"></canvas>
+          </div>
+          <div class="findings-foot">
+            <article class="guide-card findings-callout">
+              <span class="guide-kicker">Takeaway</span>
+              <p id="findings-takeaway">
+                Across the headline models, wetter county-years line up with weaker migration, employment, and construction activity.
+              </p>
+            </article>
+            <article class="guide-card findings-callout subtle">
+              <span class="guide-kicker">Reading Note</span>
+              <p id="findings-note">
+                Compare direction and signal strength first, then hover to see the underlying estimate and standard error.
+              </p>
+            </article>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <script src="./assets/leaflet.js"></script>
+    <script src="./assets/chart.umd.js"></script>
+    <script src="./data/mn-counties.js"></script>
+    <script src="./data/dashboard-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+import delimited using "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_quarter_2011_2023.csv", clear
+save "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_quarter_2011_2023.dta", replace
+
+import delimited using "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_year_2011_2023.csv", clear
+save "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_year_2011_2023.dta", replace
+
+import delimited using "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_year_2011_2023_wide.csv", clear
+
+capture rename qwi_incomplete_year_total_privat qwi_inc_tp
+capture rename qwi_hires_flag_issue_total_priva qwi_hflag_tp
+capture rename qwi_emp_flag_issue_total_private qwi_eflag_tp
+capture rename qwi_sep_flag_issue_total_private qwi_sflag_tp
+capture rename qwi_earns_flag_issue_total_priva qwi_wflag_tp
+capture rename qwi_job_gains_flag_issue_total_p qwi_jgflag_tp
+capture rename qwi_job_losses_flag_issue_total_ qwi_jlflag_tp
+
+capture rename qwi_incomplete_year_construction qwi_inc_con
+capture rename qwi_hires_flag_issue_constructio qwi_hflag_con
+capture rename qwi_emp_flag_issue_construction qwi_eflag_con
+capture rename qwi_sep_flag_issue_construction qwi_sflag_con
+capture rename qwi_earns_flag_issue_constructio qwi_wflag_con
+capture rename qwi_job_gains_flag_issue_constru qwi_jgflag_con
+capture rename qwi_job_losses_flag_issue_constr qwi_jlflag_con
+
+save "/Users/brendynbeasley/Desktop/mn_climate_project/clean/mn_qwi_county_year_2011_2023_wide.dta", replace
