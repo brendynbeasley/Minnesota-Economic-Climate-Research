@@ -261,16 +261,6 @@ Project author:
 
 - Brendyn Beasley
 
-## Future Work
-
-Potential next steps include:
-
-- adding formal house price outcomes such as FHFA county house price indexes
-- expanding climate mechanisms beyond precipitation and temperature alone
-- extending the analysis to other states for comparison
-- exploring stronger causal designs or event-based flood analyses
-- refining public-facing communication products and reproducibility materials
-
 ## Citation and Data Access
 
 The Zenodo archive is the official project DOI for raw research materials:
